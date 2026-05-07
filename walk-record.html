@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#8B5E3C">
+  <meta name="description" content="散歩を記録する — choko＆pero">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>散歩記録 — choko＆pero</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/walk-record.css">
+</head>
+<body>
+  <div class="walk-record-page" id="walk-record-page">
+
+    <!-- トップバー -->
+    <div class="walk-record-topbar">
+      <button class="btn-back" id="btn-back" aria-label="ホームに戻る">
+        &#8592; 戻る
+      </button>
+      <h2>🐾 散歩記録</h2>
+    </div>
+
+    <!-- ペット選択 -->
+    <div class="pet-select-area" id="pet-buttons-area">
+      <p class="pet-select-label">散歩するコを選んでね！</p>
+      <div class="pet-buttons" id="pet-buttons"></div>
+    </div>
+
+    <!-- Google Maps -->
+    <div class="walk-map-container">
+      <div id="walk-tracking-map"></div>
+    </div>
+
+    <!-- 距離・時間 -->
+    <div class="walk-stats">
+      <div class="walk-stat-item">
+        <span class="walk-stat-value">
+          <span id="stat-distance">0.00</span>
+        </span>
+        <span class="walk-stat-label">km</span>
+      </div>
+      <div class="walk-stat-item">
+        <span class="walk-stat-value" id="stat-time">00:00</span>
+        <span class="walk-stat-label">経過時間</span>
+      </div>
+    </div>
+
+    <!-- 操作ボタン -->
+    <div class="walk-controls">
+      <button class="btn-primary btn-walk-start" id="btn-walk-start" aria-label="散歩を開始する">
+        🐾 散歩スタート！
+      </button>
+      <button class="btn-primary btn-danger btn-walk-end" id="btn-walk-end" aria-label="散歩を終了して保存する">
+        🏁 散歩おわり！
+      </button>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/walk-record.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+/* ─── 散歩記録画面 ─── */
+.walk-record-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--color-bg);
+}
+
+.walk-record-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+.walk-record-topbar h2 {
+  font-family: var(--font-pop);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  flex: 1;
+  text-align: center;
+}
+
+/* ペット選択 */
+.pet-select-area {
+  padding: var(--space-md);
+}
+.pet-select-label {
+  font-family: var(--font-pop);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+.pet-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+.btn-pet-toggle {
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-pop);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  transition: all var(--transition);
+}
+.btn-pet-toggle.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+/* マップ */
+.walk-map-container {
+  flex: 1;
+  min-height: 300px;
+  position: relative;
+  background: #e8e0d8;
+}
+#walk-tracking-map { width: 100%; height: 100%; min-height: 300px; }
+
+/* 距離・時間表示 */
+.walk-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-surface);
+}
+.walk-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.walk-stat-value {
+  font-family: var(--font-pop);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+}
+.walk-stat-label {
+  font-family: var(--font-pop);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* 操作ボタン */
+.walk-controls {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.btn-walk-start {
+  background: linear-gradient(135deg, #8B5E3C, #C49A6C);
+}
+.btn-walk-end {
+  background: linear-gradient(135deg, #E05C5C, #F08080);
+  display: none;
+}
+.btn-walk-end.visible { display: flex; }
+.btn-walk-start.hidden { display: none; }

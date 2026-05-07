@@ -1,0 +1,92 @@
+/* ─── アクションボタンエリア ─── */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.btn-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-sm);
+  border-radius: var(--radius-md);
+  font-family: var(--font-pop);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+  min-height: 90px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-action::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.btn-action:active { transform: scale(0.96); box-shadow: var(--shadow-sm); }
+.btn-action:hover::before { opacity: 1; }
+
+.btn-health {
+  background: linear-gradient(135deg, #E05C5C, #F08080);
+}
+.btn-walk {
+  background: linear-gradient(135deg, #8B5E3C, #C49A6C);
+}
+
+.btn-icon { font-size: 1.8rem; line-height: 1; }
+.btn-label { font-size: 0.875rem; line-height: 1.2; text-align: center; }
+
+/* ─── 戻るボタン（散歩・履歴画面） ─── */
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-pop);
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition);
+}
+.btn-back:active { background: var(--color-accent-soft); }
+
+/* ─── 汎用ボタン ─── */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  font-family: var(--font-pop);
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.btn-primary:active { transform: scale(0.97); box-shadow: var(--shadow-sm); }
+
+.btn-danger {
+  background: linear-gradient(135deg, #E05C5C, #F08080);
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 2px solid var(--color-border);
+  box-shadow: none;
+}

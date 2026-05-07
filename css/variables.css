@@ -1,0 +1,53 @@
+:root {
+  /* ─── カラーパレット（ブラウン系） ─── */
+  --color-primary:       #8B5E3C;
+  --color-primary-dark:  #6B4226;
+  --color-primary-light: #C49A6C;
+  --color-accent:        #E8A87C;
+  --color-accent-soft:   #F5D9C0;
+  --color-bg:            #FDF6EE;
+  --color-surface:       #FFFFFF;
+  --color-surface-warm:  #FFF8F2;
+  --color-border:        #E8D5C0;
+
+  /* 記録カラー */
+  --color-health:        #E05C5C;
+  --color-health-soft:   #FFE8E8;
+  --color-walk:          #5B9BD5;
+  --color-walk-soft:     #E0EEFF;
+
+  /* テキスト */
+  --color-text:          #3E2723;
+  --color-text-muted:    #8D6E5A;
+  --color-text-light:    #BFA090;
+
+  /* 曜日カラー */
+  --color-sun:           #E05C5C;
+  --color-sat:           #5B9BD5;
+
+  /* ─── フォント ─── */
+  --font-main: 'Noto Sans JP', sans-serif;
+  --font-pop:  'M PLUS Rounded 1c', sans-serif;
+
+  /* ─── 余白・サイズ ─── */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+
+  /* ─── 角丸 ─── */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-full: 9999px;
+
+  /* ─── シャドウ ─── */
+  --shadow-sm:   0 2px 8px rgba(139, 94, 60, 0.10);
+  --shadow-md:   0 4px 16px rgba(139, 94, 60, 0.15);
+  --shadow-lg:   0 8px 32px rgba(139, 94, 60, 0.20);
+
+  /* ─── トランジション ─── */
+  --transition: 0.2s ease;
+}

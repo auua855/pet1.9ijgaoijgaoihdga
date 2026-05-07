@@ -1,0 +1,199 @@
+/* ─── 散歩履歴一覧画面 ─── */
+.walk-history-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--color-bg);
+}
+
+.walk-history-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.walk-history-topbar h2 {
+  font-family: var(--font-pop);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  flex: 1;
+  text-align: center;
+}
+
+.walk-history-list {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.walk-history-item {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.walk-history-item:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+.walk-history-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.walk-history-info {
+  flex: 1;
+}
+.walk-history-date {
+  font-family: var(--font-pop);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+.walk-history-pets {
+  font-family: var(--font-pop);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.walk-history-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.walk-history-dist {
+  font-family: var(--font-pop);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-walk);
+  white-space: nowrap;
+}
+
+.walk-history-dur {
+  font-family: var(--font-pop);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.walk-history-map-hint {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.walk-history-item--tappable {
+  cursor: pointer;
+}
+
+.walk-history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  gap: var(--space-md);
+  color: var(--color-text-muted);
+}
+.walk-history-empty .empty-icon { font-size: 3rem; }
+.walk-history-empty p {
+  font-family: var(--font-pop);
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ─── ルート地図ポップアップ ─── */
+.route-map-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.route-map-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(62, 39, 35, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.route-map-card {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow: hidden;
+  animation: routeMapIn 0.25s ease;
+}
+
+@keyframes routeMapIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.route-map-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.route-map-header h3 {
+  font-family: var(--font-pop);
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+}
+
+.route-map-meta {
+  font-family: var(--font-pop);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.route-map-close {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.route-map-close:active {
+  background: var(--color-border);
+}
+
+.route-map-container {
+  width: 100%;
+  height: 50vh;
+  min-height: 300px;
+}
