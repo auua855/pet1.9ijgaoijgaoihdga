@@ -7,19 +7,29 @@
   align-items: flex-end;
 }
 
+.header-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  animation: bgZoomOut 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
 .header-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #8B5E3C 0%, #C49A6C 60%, #E8A87C 100%);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* 背景画像のアニメーション（ズームアウトしながらフェードイン） */
-  animation: bgZoomOut 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  transform: scale(1.1);
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
 }
+
+.header-bg.active {
+  opacity: 1;
+}
+
 @keyframes bgZoomOut {
-  from { transform: scale(1.15); opacity: 0; }
+  from { transform: scale(1.08); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
 

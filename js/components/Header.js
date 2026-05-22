@@ -18,7 +18,10 @@ export class Header {
   render() {
     this.container.innerHTML = `
       <header class="app-header">
-        <div class="header-bg" id="header-bg"></div>
+        <div class="header-bg-wrapper">
+          <div class="header-bg active" id="header-bg-1"></div>
+          <div class="header-bg" id="header-bg-2"></div>
+        </div>
         <div class="header-content">
           <div class="header-logo">
             <img src="assets/images/icon.png" alt="choko&pero" class="header-icon">
@@ -62,11 +65,35 @@ export class Header {
       .addEventListener('click', this.onRefreshClick);
   }
 
-  /** header-bg フォルダ内の画像を背景に適用 */
+  /** header-bg フォルダ内の画像を背景に適用し、1分おきに交互に切り替える */
   _applyBg() {
-    const bgEl = this.container.querySelector('#header-bg');
-    bgEl.style.backgroundImage = `url('assets/images/header-bg/20260411_215143-IMG_STYLE.jpg')`;
-    bgEl.style.backgroundSize = 'cover';
-    bgEl.style.backgroundPosition = 'center';
+    const images = [
+      'assets/images/header-bg/20260411_215143-IMG_STYLE.jpg',
+      'assets/images/header-bg/20260503_192854-IMG_STYLE.jpg'
+    ];
+    
+    const bg1 = this.container.querySelector('#header-bg-1');
+    const bg2 = this.container.querySelector('#header-bg-2');
+
+    if (!bg1 || !bg2) return;
+
+    // 初期状態の設定
+    bg1.style.backgroundImage = `url('${images[0]}')`;
+    bg2.style.backgroundImage = `url('${images[1]}')`;
+
+    let currentIdx = 0;
+    
+    // 60秒（1分）おきに交互に切り替え
+    setInterval(() => {
+      currentIdx = (currentIdx === 0) ? 1 : 0;
+      
+      if (currentIdx === 0) {
+        bg1.classList.add('active');
+        bg2.classList.remove('active');
+      } else {
+        bg1.classList.remove('active');
+        bg2.classList.add('active');
+      }
+    }, 60000);
   }
 }

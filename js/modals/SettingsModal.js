@@ -130,11 +130,21 @@ export class SettingsModal {
 
     return `
       <div class="pet-card" data-pet-id="${id}">
-        <div class="pet-card-row">
+        <div class="pet-card-row" style="grid-template-columns: 1fr;">
           <div class="form-group">
             <label class="form-label">名前</label>
             <input type="text" class="form-input pet-name" placeholder="例：ちょこ"
               value="${p.name || ''}">
+          </div>
+        </div>
+        <div class="pet-card-row">
+          <div class="form-group">
+            <label class="form-label">性別</label>
+            <select class="form-input pet-gender">
+              <option value="">選択なし</option>
+              <option value="オス" ${p.gender === 'オス' ? 'selected' : ''}>オス</option>
+              <option value="メス" ${p.gender === 'メス' ? 'selected' : ''}>メス</option>
+            </select>
           </div>
           <div class="form-group">
             <label class="form-label">体重 (kg)</label>
@@ -186,10 +196,16 @@ export class SettingsModal {
         </div>
         
         <div class="pet-card-row">
-          <div class="form-group">
-            <label class="form-label">年齢 (歳)</label>
-            <input type="number" class="form-input pet-age" min="0"
-              placeholder="手入力も可" value="${p.age ?? ''}">
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="form-label">年齢</label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="number" class="form-input pet-age-years" min="0" style="flex: 1;"
+                placeholder="才" value="${p.age ?? ''}">
+              <span class="form-label" style="font-size: 0.95rem; margin-bottom: 0; white-space: nowrap;">才</span>
+              <input type="number" class="form-input pet-age-months" min="0" max="11" style="flex: 1;"
+                placeholder="ヶ月" value="${p.ageMonths ?? ''}">
+              <span class="form-label" style="font-size: 0.95rem; margin-bottom: 0; white-space: nowrap;">ヶ月</span>
+            </div>
           </div>
         </div>
 
@@ -328,7 +344,8 @@ export class SettingsModal {
       const monthSel = card.querySelector('.pet-b-month');
       const daySel = card.querySelector('.pet-b-day');
       const hiddenInput = card.querySelector('.pet-birthday');
-      const ageInput = card.querySelector('.pet-age');
+      const ageYearsInput = card.querySelector('.pet-age-years');
+      const ageMonthsInput = card.querySelector('.pet-age-months');
       
       // 既にバインド済みの場合はスキップ
       if (hiddenInput.dataset.bound === 'true') return;
@@ -346,13 +363,21 @@ export class SettingsModal {
           const birthDate = new Date(dateStr);
           const today = new Date();
           if (!isNaN(birthDate.getTime())) {
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const md = today.getMonth() - birthDate.getMonth();
-            if (md < 0 || (md === 0 && today.getDate() < birthDate.getDate())) {
-              age--;
+            let years = today.getFullYear() - birthDate.getFullYear();
+            let months = today.getMonth() - birthDate.getMonth();
+            let days = today.getDate() - birthDate.getDate();
+
+            if (days < 0) {
+              months--;
             }
-            if (age >= 0) {
-              ageInput.value = age;
+            if (months < 0) {
+              years--;
+              months += 12;
+            }
+
+            if (years >= 0) {
+              ageYearsInput.value = years;
+              ageMonthsInput.value = months;
             }
           }
         } else {
@@ -388,6 +413,9 @@ export class SettingsModal {
       const insuranceRadio = card.querySelector('.pet-insurance-type:checked');
       const hasInsurance = insuranceRadio ? insuranceRadio.value === 'yes' : false;
 
+      const ageVal = parseInt(card.querySelector('.pet-age-years').value);
+      const ageMonthsVal = parseInt(card.querySelector('.pet-age-months').value);
+
       updatedPets.push({
         id: id.startsWith('new_') ? 'pet_' + Date.now() + Math.random().toString(36).slice(2) : id,
         name,
@@ -397,7 +425,9 @@ export class SettingsModal {
         mix1: card.querySelector('.pet-mix-1').value.trim(),
         mix2: card.querySelector('.pet-mix-2').value.trim(),
         birthday: card.querySelector('.pet-birthday').value || null,
-        age: parseInt(card.querySelector('.pet-age').value) ?? null,
+        age: isNaN(ageVal) ? null : ageVal,
+        ageMonths: isNaN(ageMonthsVal) ? null : ageMonthsVal,
+        gender: card.querySelector('.pet-gender').value,
         foodAmount: card.querySelector('.pet-food').value.trim(),
         foodMaker: card.querySelector('.pet-food-maker').value.trim(),
         foodName: card.querySelector('.pet-food-name').value.trim(),
