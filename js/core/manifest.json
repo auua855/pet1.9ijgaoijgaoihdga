@@ -1,0 +1,14 @@
+{
+  "name": "choko＆pero",
+  "short_name": "chokopero",
+  "description": "ペットの健康・散歩記録アプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDF6EE",
+  "theme_color": "#8B5E3C",
+  "icons": [
+    { "src": "assets/images/icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/images/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#8B5E3C">
+  <meta name="description" content="散歩の記録一覧 — choko＆pero">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>散歩の記録 — choko＆pero</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/walk-history.css">
+</head>
+<body>
+  <div class="walk-history-page">
+
+    <!-- トップバー -->
+    <div class="walk-history-topbar">
+      <button class="btn-back" id="btn-back" aria-label="ホームに戻る">
+        &#8592; 戻る
+      </button>
+      <h2>📋 散歩の記録</h2>
+    </div>
+
+    <!-- 履歴リスト -->
+    <main class="main-scroll">
+      <div class="walk-history-list" id="walk-history-list" role="list">
+        <!-- walk-history.js で描画 -->
+      </div>
+    </main>
+
+  </div>
+
+  <script type="module" src="js/walk-history.js"></script>
+</body>
+</html>

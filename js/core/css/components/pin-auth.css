@@ -1,0 +1,103 @@
+/* ─── PINコード認証画面 ─── */
+.pin-auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-body);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.pin-auth-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #8B5E3C 0%, #C49A6C 60%, #E8A87C 100%);
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.pin-logo {
+  font-family: var(--font-pop);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pin-logo span {
+  color: var(--color-accent);
+}
+
+.pin-message {
+  font-family: var(--font-pop);
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+}
+
+.pin-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 300px;
+}
+
+.pin-input {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 0.5em;
+  padding: var(--space-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--color-text);
+  font-family: monospace;
+  transition: border-color var(--transition);
+}
+
+.pin-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(139, 94, 60, 0.1);
+}
+
+.pin-input.error {
+  border-color: var(--color-accent);
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.pin-btn {
+  width: 100%;
+  padding: var(--space-md);
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: var(--font-pop);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.pin-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+  40%, 60% { transform: translate3d(8px, 0, 0); }
+}

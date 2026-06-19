@@ -1,0 +1,123 @@
+/* ─── ヘッダー ─── */
+.app-header {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.header-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  animation: bgZoomOut 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.header-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.header-bg.active {
+  opacity: 1;
+}
+
+@keyframes bgZoomOut {
+  from { transform: scale(1.08); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.header-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(62,39,35,0.45) 100%);
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: var(--space-md);
+}
+
+.header-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  /* ロゴのアニメーション（下からふわっと浮き上がる） */
+  opacity: 0;
+  animation: slideUpFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards;
+}
+@keyframes slideUpFade {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.header-icon {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+}
+
+.header-title {
+  font-family: var(--font-pop);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  letter-spacing: 0.05em;
+}
+.header-title span { color: var(--color-accent); }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  align-self: flex-start;
+  margin-top: var(--space-sm);
+}
+
+.btn-settings, .btn-refresh {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: background var(--transition), transform var(--transition);
+  font-size: 1.2rem;
+  /* アニメーション */
+  opacity: 0;
+  animation: slideLeftFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+}
+
+.btn-refresh {
+  animation-delay: 0.4s;
+}
+
+.btn-settings:hover, .btn-settings:active,
+.btn-refresh:hover, .btn-refresh:active {
+  background: rgba(255,255,255,0.40);
+  transform: rotate(30deg) scale(1.05);
+}
+
+@keyframes slideLeftFade {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

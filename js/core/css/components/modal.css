@@ -1,0 +1,309 @@
+/* ─── モーダル共通 ─── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(62, 39, 35, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: overlayIn 0.2s ease;
+}
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-sheet {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92dvh;
+  overflow-y: auto;
+  animation: sheetUp 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.modal-handle {
+  width: 40px; height: 4px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  margin: 12px auto 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-md) var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+.modal-title {
+  font-family: var(--font-pop);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+.modal-close {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background var(--transition);
+}
+.modal-close:active { background: var(--color-border); }
+
+.modal-body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ─── フォーム ─── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.form-label {
+  font-family: var(--font-pop);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-warm);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  transition: border-color var(--transition);
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--color-primary-light);
+}
+.form-textarea { resize: vertical; min-height: 80px; }
+
+/* ペット選択（モーダル内） */
+.pet-select-chips {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-pop);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.chip.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: white;
+}
+
+/* ─── 設定モーダル固有（タブUI） ─── */
+.settings-tabs {
+  display: flex;
+  gap: var(--space-xs);
+  border-bottom: 2px solid var(--color-border);
+  margin-bottom: var(--space-md);
+  padding: 0 var(--space-xs);
+}
+.settings-tab {
+  flex: 1;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-pop);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: -2px;
+}
+.settings-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+.tab-content {
+  display: none;
+  animation: overlayIn 0.2s ease;
+}
+.tab-content.active {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.settings-section {
+  background: var(--color-surface);
+  border: none;
+  padding: 0;
+}
+
+.settings-section-title {
+  font-family: var(--font-pop);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* ペットカード（設定内） */
+.pet-card {
+  background: var(--color-surface-warm);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+.pet-card-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+.btn-remove-pet {
+  align-self: flex-end;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--color-health-soft);
+  color: var(--color-health);
+  font-family: var(--font-pop);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid var(--color-health);
+  transition: all var(--transition);
+}
+.btn-remove-pet:active { background: var(--color-health); color: white; }
+
+.btn-add-pet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--color-primary-light);
+  background: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-pop);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all var(--transition);
+  width: 100%;
+}
+.btn-add-pet:active { background: var(--color-accent-soft); }
+
+/* 写真プレビュー */
+.photo-preview {
+  width: 100%;
+  height: 160px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 2px dashed var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.photo-preview:not(:has(img)) .photo-preview-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-text-muted);
+  font-family: var(--font-pop);
+  font-size: 0.85rem;
+}
+.photo-preview-hint .hint-icon { font-size: 2rem; }
+
+/* ─── 動的入力フィールド・ラジオボタン・ドラム ─── */
+.hidden-field {
+  display: none !important;
+}
+
+.radio-group {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: 4px;
+}
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.radio-label input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.date-drum-group {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+.date-drum-group select {
+  flex: 1;
+  padding: 10px 8px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-warm);
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  outline: none;
+  text-align: center;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B5E3C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 14px;
+  padding-right: 24px;
+}
+.date-drum-group select:focus {
+  border-color: var(--color-primary-light);
+}
+.date-drum-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
