@@ -95,6 +95,32 @@ const gasClient = {
       console.error('GAS取得エラー（散歩）:', e);
       return [];
     }
+  },
+  /**
+   * 体調記録を更新
+   * @param {Object} record - { rowNum, date, petName, content, photoId }
+   */
+  async updateHealth(record) {
+    const { gasHealthUrl } = this._getSettings();
+    if (!gasHealthUrl) {
+      console.warn('GAS URL（体調記録用）が未設定です');
+      return false;
+    }
+    try {
+      const response = await fetch(gasHealthUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'updateHealth', ...record })
+      });
+      const result = await response.json();
+      if (result.status === 'error') {
+        throw new Error(result.message);
+      }
+      return true;
+    } catch (e) {
+      console.error('GAS更新エラー（体調）:', e);
+      return false;
+    }
   }
 };
 

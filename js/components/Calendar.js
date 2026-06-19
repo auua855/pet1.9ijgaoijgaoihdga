@@ -4,6 +4,8 @@
 import recordStore from '../core/recordStore.js';
 import walkStore from '../core/walkStore.js';
 import { formatDurationText } from '../core/distanceCalc.js';
+import gasClient from '../core/gasClient.js';
+import { showToast } from '../app.js';
 
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -203,10 +205,20 @@ export class Calendar {
             ? `<p class="popup-photo"><a href="${photoUrl}" target="_blank" rel="noopener">📷 写真を見る</a></p>`
             : '';
           return `
-          <div class="popup-record">
-            <span class="popup-pet">${r.petName || ''}</span>
-            <p>${r.content || ''}</p>
-            ${photoHTML}
+          <div class="popup-record popup-health-record" data-row-num="${r.rowNum || ''}" data-date="${r.date || ''}" data-pet-name="${r.petName || ''}">
+            <div class="popup-record-view">
+              <span class="popup-pet">${r.petName || ''}</span>
+              <p class="record-content-text">${r.content || ''}</p>
+              ${photoHTML}
+              <button class="btn-edit-record" style="background:none; border:none; color:var(--color-primary); cursor:pointer; font-size:0.85rem; padding:4px 0; font-family:var(--font-pop); font-weight:bold; display:flex; align-items:center; gap:2px; margin-top:4px;">✏️ 編集する</button>
+            </div>
+            <div class="popup-record-edit" style="display:none; flex-direction:column; gap:8px; margin-top:8px;">
+              <textarea class="form-textarea edit-content-input" rows="2" style="width:100%; box-sizing:border-box;">${r.content || ''}</textarea>
+              <div style="display:flex; gap:8px; justify-content:flex-end;">
+                <button class="btn-cancel-edit" style="padding:4px 12px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:none; cursor:pointer; font-family:var(--font-pop); font-size:0.8rem;">キャンセル</button>
+                <button class="btn-save-edit" style="padding:4px 12px; border-radius:var(--radius-sm); border:none; background:var(--color-primary); color:white; cursor:pointer; font-family:var(--font-pop); font-size:0.8rem;">保存</button>
+              </div>
+            </div>
           </div>`;
         }).join('')}
       </div>`;
@@ -240,5 +252,59 @@ export class Calendar {
     const close = () => document.getElementById('day-detail-popup')?.remove();
     document.getElementById('popup-close').addEventListener('click', close);
     document.getElementById('popup-overlay').addEventListener('click', close);
+
+    // 編集イベントのバインド
+    const popupEl = document.getElementById('day-detail-popup');
+    popupEl.querySelectorAll('.popup-health-record').forEach(recordEl => {
+      const viewEl = recordEl.querySelector('.popup-record-view');
+      const editEl = recordEl.querySelector('.popup-record-edit');
+      const textarea = editEl.querySelector('.edit-content-input');
+      const rowNum = recordEl.dataset.rowNum ? Number(recordEl.dataset.rowNum) : null;
+      const date = recordEl.dataset.date;
+      const petName = recordEl.dataset.petName;
+
+      recordEl.querySelector('.btn-edit-record').addEventListener('click', () => {
+        viewEl.style.display = 'none';
+        editEl.style.display = 'flex';
+        textarea.focus();
+      });
+
+      recordEl.querySelector('.btn-cancel-edit').addEventListener('click', () => {
+        viewEl.style.display = 'block';
+        editEl.style.display = 'none';
+        textarea.value = viewEl.querySelector('.record-content-text').textContent;
+      });
+
+      recordEl.querySelector('.btn-save-edit').addEventListener('click', async () => {
+        const newContent = textarea.value.trim();
+        if (!newContent) {
+          alert('内容を入力してください');
+          return;
+        }
+
+        const saveBtn = recordEl.querySelector('.btn-save-edit');
+        saveBtn.disabled = true;
+        saveBtn.textContent = '保存中...';
+
+        // 1. ローカルを更新
+        recordStore.update(rowNum, { date, petName, content: newContent });
+
+        // 2. GASに送信
+        const success = await gasClient.updateHealth({ rowNum, date, petName, content: newContent });
+        
+        if (success) {
+          viewEl.querySelector('.record-content-text').textContent = newContent;
+          viewEl.style.display = 'block';
+          editEl.style.display = 'none';
+          
+          this.refresh();
+          showToast('記録を更新しました 🩺');
+        } else {
+          alert('GASへの保存に失敗しました。電波状況などを確認してください。');
+          saveBtn.disabled = false;
+          saveBtn.textContent = '保存';
+        }
+      });
+    });
   }
 }

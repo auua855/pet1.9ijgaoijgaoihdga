@@ -40,6 +40,32 @@ function doPost(e) {
 
       return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
         .setMimeType(ContentService.MimeType.JSON);
+    } else if (action === 'updateHealth') {
+      var rowNum = data.rowNum ? Number(data.rowNum) : null;
+      var date = data.date;
+      var petName = data.petName;
+      var content = data.content;
+      var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      
+      if (!rowNum && date && petName) {
+        var rows = sheet.getDataRange().getValues();
+        for (var i = 1; i < rows.length; i++) {
+          var rowDateStr = String(rows[i][0]);
+          if (rowDateStr.indexOf(date) !== -1 && rows[i][1] === petName) {
+            rowNum = i + 1;
+            break;
+          }
+        }
+      }
+      
+      if (rowNum) {
+        sheet.getRange(rowNum, 3).setValue(content);
+        return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "対象の行が見つかりませんでした" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
     }
 
   } catch (error) {
@@ -61,6 +87,7 @@ function doGet(e) {
       for (var i = 1; i < data.length; i++) {
         if (!data[i][0]) continue;
         result.push({
+          rowNum: i + 1,
           date: data[i][0],
           petName: data[i][1],
           content: data[i][2],
