@@ -97,10 +97,22 @@ function initApp() {
     { onMapClick: () => { window.location.href = 'walk-history.html'; } }
   );
 
-  // Service Worker 登録
+  // Service Worker 登録と自動更新の自動反映
   if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+
     navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('SW registered'))
+      .then(reg => {
+        console.log('SW registered');
+        // 起動時に最新の更新がないかチェック
+        reg.update();
+      })
       .catch(e => console.error('SW error:', e));
   }
 
