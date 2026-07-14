@@ -59,6 +59,7 @@ function doPost(e) {
       }
       
       if (rowNum) {
+        sheet.getRange(rowNum, 2).setValue(petName);
         sheet.getRange(rowNum, 3).setValue(content);
         return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
           .setMimeType(ContentService.MimeType.JSON);

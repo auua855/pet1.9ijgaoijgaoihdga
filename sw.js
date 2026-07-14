@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chokopero-v1';
+const CACHE_NAME = 'chokopero-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -15,6 +15,24 @@ const ASSETS = [
   './css/components/walk-record.css',
   './css/components/walk-history.css',
   './css/components/modal.css',
+  './js/app.js',
+  './js/components/ActionButtons.js',
+  './js/components/Calendar.js',
+  './js/components/Header.js',
+  './js/components/LoadingOverlay.js',
+  './js/components/PinAuth.js',
+  './js/components/WalkLogMap.js',
+  './js/modals/HealthRecordModal.js',
+  './js/modals/SettingsModal.js',
+  './js/core/storage.js',
+  './js/core/petStore.js',
+  './js/core/recordStore.js',
+  './js/core/walkStore.js',
+  './js/core/gasClient.js',
+  './js/core/gpsTracker.js',
+  './js/core/distanceCalc.js',
+  './js/walk-record.js',
+  './js/walk-history.js',
   './assets/images/icon.png'
 ];
 

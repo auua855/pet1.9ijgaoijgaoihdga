@@ -57,7 +57,9 @@ export class HealthRecordModal {
                   <span>タップして写真を選択</span>
                 </div>
               </div>
-              <input type="file" id="photo-input" accept="image/*" capture="environment"
+              <input type="file" id="photo-input-camera" accept="image/*" capture="environment"
+                style="display:none" aria-hidden="true">
+              <input type="file" id="photo-input-gallery" accept="image/*"
                 style="display:none" aria-hidden="true">
             </div>
             <button class="btn-primary" id="health-save">💾 記録を保存する</button>
@@ -90,18 +92,53 @@ export class HealthRecordModal {
       });
     });
 
-    // 写真選択
+    // 写真選択（カメラ or 端末内データ の選択ダイアログ）
     const preview = document.getElementById('photo-preview');
-    const photoInput = document.getElementById('photo-input');
-    preview.addEventListener('click', () => photoInput.click());
-    preview.addEventListener('keydown', e => { if (e.key === 'Enter') photoInput.click(); });
-    photoInput.addEventListener('change', e => {
-      const file = e.target.files[0];
+    const inputCamera = document.getElementById('photo-input-camera');
+    const inputGallery = document.getElementById('photo-input-gallery');
+
+    const handleFileSelect = (file) => {
       if (!file) return;
       this.photoFile = file; // ファイルオブジェクトを保持
       const url = URL.createObjectURL(file);
       preview.innerHTML = `<img src="${url}" alt="選択した写真">`;
-    });
+    };
+
+    const showPhotoActionSheet = () => {
+      document.getElementById('photo-action-sheet')?.remove();
+      document.body.insertAdjacentHTML('beforeend', `
+        <div class="photo-action-sheet-overlay" id="photo-action-sheet" role="dialog" aria-modal="true">
+          <div class="photo-action-sheet-card">
+            <div class="photo-action-sheet-header">📷 写真を追加する</div>
+            <button class="action-sheet-btn" id="btn-action-camera">📷 写真を撮る</button>
+            <button class="action-sheet-btn" id="btn-action-gallery">🖼️ ライブラリから選ぶ</button>
+            <button class="action-sheet-btn action-sheet-btn--cancel" id="btn-action-cancel">キャンセル</button>
+          </div>
+        </div>
+      `);
+
+      const sheet = document.getElementById('photo-action-sheet');
+      const closeSheet = () => sheet?.remove();
+
+      sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
+      document.getElementById('btn-action-cancel').addEventListener('click', closeSheet);
+
+      document.getElementById('btn-action-camera').addEventListener('click', () => {
+        inputCamera.click();
+        closeSheet();
+      });
+
+      document.getElementById('btn-action-gallery').addEventListener('click', () => {
+        inputGallery.click();
+        closeSheet();
+      });
+    };
+
+    preview.addEventListener('click', showPhotoActionSheet);
+    preview.addEventListener('keydown', e => { if (e.key === 'Enter') showPhotoActionSheet(); });
+
+    inputCamera.addEventListener('change', e => handleFileSelect(e.target.files[0]));
+    inputGallery.addEventListener('change', e => handleFileSelect(e.target.files[0]));
 
     // 保存
     document.getElementById('health-save').addEventListener('click', () => this._save());

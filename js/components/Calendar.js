@@ -6,6 +6,7 @@ import walkStore from '../core/walkStore.js';
 import { formatDurationText } from '../core/distanceCalc.js';
 import gasClient from '../core/gasClient.js';
 import { showToast } from '../app.js';
+import petStore from '../core/petStore.js';
 
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -192,6 +193,8 @@ export class Calendar {
     const walkRecs = walkStore.getByDate(dateKey);
     if (healthRecs.length === 0 && walkRecs.length === 0) return;
 
+    const pets = petStore.getAll();
+
     let body = '';
     if (healthRecs.length > 0) {
       body += `<div class="popup-section">
@@ -204,6 +207,22 @@ export class Calendar {
           const photoHTML = photoUrl
             ? `<p class="popup-photo"><a href="${photoUrl}" target="_blank" rel="noopener">📷 写真を見る</a></p>`
             : '';
+
+          // ペットの選択肢
+          const petOptions = pets.map(p => `
+            <option value="${p.name}" ${p.name === r.petName ? 'selected' : ''}>${p.name}</option>
+          `).join('');
+          const hasCurrentPet = pets.some(p => p.name === r.petName);
+          const fallbackOption = !hasCurrentPet && r.petName
+            ? `<option value="${r.petName}" selected>${r.petName}</option>`
+            : '';
+          const petSelectHTML = `
+            <select class="form-select edit-pet-select" style="padding:6px 10px; margin-bottom:4px; font-family:var(--font-pop); font-size:0.9rem; border:2px solid var(--color-border); border-radius:var(--radius-sm); background:var(--color-surface-warm);">
+              ${fallbackOption}
+              ${petOptions}
+            </select>
+          `;
+
           return `
           <div class="popup-record popup-health-record" data-row-num="${r.rowNum || ''}" data-date="${r.date || ''}" data-pet-name="${r.petName || ''}">
             <div class="popup-record-view">
@@ -213,7 +232,14 @@ export class Calendar {
               <button class="btn-edit-record" style="background:none; border:none; color:var(--color-primary); cursor:pointer; font-size:0.85rem; padding:4px 0; font-family:var(--font-pop); font-weight:bold; display:flex; align-items:center; gap:2px; margin-top:4px;">✏️ 編集する</button>
             </div>
             <div class="popup-record-edit" style="display:none; flex-direction:column; gap:8px; margin-top:8px;">
-              <textarea class="form-textarea edit-content-input" rows="2" style="width:100%; box-sizing:border-box;">${r.content || ''}</textarea>
+              <div class="form-group" style="gap:4px;">
+                <label class="form-label" style="font-size:0.75rem;">ペット</label>
+                ${petSelectHTML}
+              </div>
+              <div class="form-group" style="gap:4px;">
+                <label class="form-label" style="font-size:0.75rem;">内容</label>
+                <textarea class="form-textarea edit-content-input" rows="2" style="width:100%; box-sizing:border-box;">${r.content || ''}</textarea>
+              </div>
               <div style="display:flex; gap:8px; justify-content:flex-end;">
                 <button class="btn-cancel-edit" style="padding:4px 12px; border-radius:var(--radius-sm); border:1px solid var(--color-border); background:none; cursor:pointer; font-family:var(--font-pop); font-size:0.8rem;">キャンセル</button>
                 <button class="btn-save-edit" style="padding:4px 12px; border-radius:var(--radius-sm); border:none; background:var(--color-primary); color:white; cursor:pointer; font-family:var(--font-pop); font-size:0.8rem;">保存</button>
@@ -261,7 +287,6 @@ export class Calendar {
       const textarea = editEl.querySelector('.edit-content-input');
       const rowNum = recordEl.dataset.rowNum ? Number(recordEl.dataset.rowNum) : null;
       const date = recordEl.dataset.date;
-      const petName = recordEl.dataset.petName;
 
       recordEl.querySelector('.btn-edit-record').addEventListener('click', () => {
         viewEl.style.display = 'none';
@@ -272,10 +297,12 @@ export class Calendar {
       recordEl.querySelector('.btn-cancel-edit').addEventListener('click', () => {
         viewEl.style.display = 'block';
         editEl.style.display = 'none';
+        editEl.querySelector('.edit-pet-select').value = recordEl.dataset.petName;
         textarea.value = viewEl.querySelector('.record-content-text').textContent;
       });
 
       recordEl.querySelector('.btn-save-edit').addEventListener('click', async () => {
+        const newPetName = editEl.querySelector('.edit-pet-select').value;
         const newContent = textarea.value.trim();
         if (!newContent) {
           alert('内容を入力してください');
@@ -287,13 +314,15 @@ export class Calendar {
         saveBtn.textContent = '保存中...';
 
         // 1. ローカルを更新
-        recordStore.update(rowNum, { date, petName, content: newContent });
+        recordStore.update(rowNum, { date, petName: newPetName, content: newContent });
 
         // 2. GASに送信
-        const success = await gasClient.updateHealth({ rowNum, date, petName, content: newContent });
+        const success = await gasClient.updateHealth({ rowNum, date, petName: newPetName, content: newContent });
         
         if (success) {
+          viewEl.querySelector('.popup-pet').textContent = newPetName;
           viewEl.querySelector('.record-content-text').textContent = newContent;
+          recordEl.dataset.petName = newPetName; // データ属性も更新しておく
           viewEl.style.display = 'block';
           editEl.style.display = 'none';
           
