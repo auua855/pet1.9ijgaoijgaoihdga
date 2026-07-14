@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chokopero-v5';
+const CACHE_NAME = 'chokopero-v6';
 const ASSETS = [
   './',
   './index.html',

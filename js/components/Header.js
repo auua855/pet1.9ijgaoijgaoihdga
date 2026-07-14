@@ -14,7 +14,6 @@ export class Header {
     this.onRefreshClick = onRefreshClick;
     this.render();
   }
-
   render() {
     this.container.innerHTML = `
       <header class="app-header">
@@ -22,6 +21,7 @@ export class Header {
           <div class="header-bg active" id="header-bg-1"></div>
           <div class="header-bg" id="header-bg-2"></div>
         </div>
+        <span class="app-version">v1.1</span>
         <div class="header-content">
           <div class="header-logo">
             <img src="assets/images/icon.png" alt="choko&pero" class="header-icon">
